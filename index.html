@@ -40,6 +40,20 @@
 				background-color:#D3D3D3;
 				cursor:pointer;
 			}
+			.info-row-style{
+				transition:all 0.5s;
+			}
+			.info-col-style{
+				transition:all 0.3s;
+			}
+			.info-col-style:hover{
+				background-color:#fff;
+				border:#cecece solid 1px;
+				box-shadow:1px 1px 5px 2px #fff;
+			}
+			.info-row-style:hover{
+				background-color:#dedede;
+			}
 		</style>
 	</head>
 	<body onkeydown="on_keydown(event)">
@@ -51,7 +65,7 @@
 					<div class="add">
 				
 						姓名：
-						<input type="text" id="name" size="10"></input>
+						<input type="text" id="name" size="10" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></input>
 						性别:
 						<input type="radio" name="sex" id="sex1" value="男">男</input>
 						<input type="radio" name="sex" id="sex2" value="女">女&nbsp;</input>
@@ -79,8 +93,8 @@
 				<fieldset class="stuMamage" style="border:solid 2px;">
 					<legend align="center">学生信息管理</legend>
 					<div>
-						<table align="center" border="1" id="stuInfromation" class="stuInfromation" style="visibility:hidden;">
-							<tr style="font-weight:bold;" >
+						<table align="center" border="1" id="stuInfromation" class="stuInfromation" style="visibility:hidden;background-color:#fafafa;">
+							<tr style="font-weight:bold; background-color:white;" >
 								<td class="td1"> 姓名</td>
 								<td class="td2"> 性别</td>
 								<td class="td1"> 学校</td>
@@ -108,12 +122,12 @@
 				var school=document.getElementById("select_school");				
 				var major=document.getElementById("select_major");
 				var classes=document.getElementById("select_classes");
-				if(name.value !=""  && sexchecked != null &&school.value!=0&&major.value!=0&&classes.value!=0){
+				if(name.value !=""&&name.value!=null && sexchecked != null &&school.value!=0&&major.value!=0&&classes.value!=0){
 					var table=document.getElementById("stuInfromation");
 					table.style.visibility="visible";
 					var y=table.insertRow(table.rows.length);
 					y.id="number_"+y.rowIndex;
-					y.class="info-row-style";
+					y.className="info-row-style";
 					y.style.textAlign="center";
 					y.insertCell(0).innerHTML=name.value;
 					y.insertCell(1).innerHTML=sexchecked.value;
@@ -121,10 +135,13 @@
 					y.insertCell(3).innerHTML=major.value;
 					y.insertCell(4).innerHTML=classes.value;
 					y.insertCell(5).innerHTML="<button class='btnstyle'>修改</button>";
-					y.insertCell(6).innerHTML="<button class='btnstyle' onclick=\"deletes('number_"+y.rowIndex+"');\">删除</button>";
+					y.insertCell(6).innerHTML="<button class='btnstyle dele' onclick=\"deletes('number_"+y.rowIndex+"');\">删除</button>";
+					for(var i=0;y.cells.length>i;i++){
+						y.cells[i].className="info-col-style";
+					}
 					name.value="";
 					name.focus();
-				}else if(name.value ==""){
+				}else if(name.value ==""||name.value==null){
 					alert("Name为空");
 					name.focus();
 				}else if(sexchecked == null){
@@ -215,8 +232,6 @@
 					if(stuTable.rows.length==1){
 						stuTable.style.visibility="hidden";
 					}
-				}else {
-					tr.style.backgroundColor="";
 				}
 			}
 		</script>
