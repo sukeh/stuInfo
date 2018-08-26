@@ -1,0 +1,224 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>学生信息表格</title>
+		<meta charset="utf-8"/>
+		<style type="text/css">
+			.container{
+				width:1000px;
+				margin:10px auto;
+			}
+			.stuAdd{
+				height:50px;
+				border:solid 2px;
+				text-align:center;
+			}
+			.school_major_select{
+				width:131px;
+			}
+			.stuMamage{
+				height:450px;
+			}
+			.td1{
+				width:150px;
+				height:20px;
+				text-align:center;
+				line-height:20px;
+			}
+			.td2{
+				width:80px;
+				height:20px;
+				text-align:center;
+				line-height:20px;
+			}
+			.btnstyle{
+				background-color:#fff;
+				outline:none;
+			}
+			.btnstyle:hover{
+				background-color:#D3D3D3;
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body onkeydown="on_keydown(event)">
+		<div>
+			<div class="container">
+				<hr/>
+				<fieldset class="stuAdd">
+					<legend align="center">学生信息添加</legend>
+					<div class="add">
+				
+						姓名：
+						<input type="text" id="name" size="10"></input>
+						性别:
+						<input type="radio" name="sex" id="sex1" value="男">男</input>
+						<input type="radio" name="sex" id="sex2" value="女">女&nbsp;</input>
+						学校：
+						<select id="select_school" class="school_major_select" onchange="select_school(this)">
+							<option value="0">请选择学校</option>
+							<option value="浙江大学">浙江大学</option>
+							<option value="浙江工业大学">浙江工业大学</option>
+							<option value="浙江师范大学">浙江师范大学</option>
+							<option value="杭州电子科技大学">杭州电子科技大学</option>
+						</select>
+						专业：
+						<select id="select_major" class="school_major_select" onchange="select_major(this);">
+							<option value="0">请选择专业</option>
+						</select>
+						班级：
+						<select id="select_classes" class="" onchange="">
+							<option value="0">请选择班级</option>
+						</select>
+						<button class="btnstyle" onclick="add();">添加</button>
+						<button class="btnstyle" type="button" onclick="clears();">重置</button>
+					</div>
+				</fieldset>
+				<hr/>
+				<fieldset class="stuMamage" style="border:solid 2px;">
+					<legend align="center">学生信息管理</legend>
+					<div>
+						<table align="center" border="1" id="stuInfromation" class="stuInfromation" style="visibility:hidden;">
+							<tr style="font-weight:bold;" >
+								<td class="td1"> 姓名</td>
+								<td class="td2"> 性别</td>
+								<td class="td1"> 学校</td>
+								<td class="td1"> 专业</td>
+								<td class="td1"> 班级</td>
+								<td colspan="2" width="160px" align="center"> 编辑</td>
+							</tr>
+						</table>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<script>
+			function on_keydown(event){
+			<!--	alert(event.keyCode);-->
+			}
+			function add(){
+				var name=document.getElementById("name");
+				var sex=document.getElementsByName("sex");
+				for(var i=0;i<sex.length;i++){
+					if(sex[i].checked){
+						var sexchecked=sex[i];
+					}
+				}
+				var school=document.getElementById("select_school");				
+				var major=document.getElementById("select_major");
+				var classes=document.getElementById("select_classes");
+				if(name.value !=""  && sexchecked != null &&school.value!=0&&major.value!=0&&classes.value!=0){
+					var table=document.getElementById("stuInfromation");
+					table.style.visibility="visible";
+					var y=table.insertRow(table.rows.length);
+					y.id="number_"+y.rowIndex;
+					y.class="info-row-style";
+					y.style.textAlign="center";
+					y.insertCell(0).innerHTML=name.value;
+					y.insertCell(1).innerHTML=sexchecked.value;
+					y.insertCell(2).innerHTML=school.value;
+					y.insertCell(3).innerHTML=major.value;
+					y.insertCell(4).innerHTML=classes.value;
+					y.insertCell(5).innerHTML="<button class='btnstyle'>修改</button>";
+					y.insertCell(6).innerHTML="<button class='btnstyle' onclick=\"deletes('number_"+y.rowIndex+"');\">删除</button>";
+					name.value="";
+					name.focus();
+				}else if(name.value ==""){
+					alert("Name为空");
+					name.focus();
+				}else if(sexchecked == null){
+					alert("Sex为空");
+				}else if(school.value==0){
+					alert("School为空");
+				}else if(major.value==0){
+					alert("Major为空");
+				}else if(classes.value==0){
+					alert("Class为空");
+				}
+			}
+			function select_school(obj){
+				var major=document.getElementById("select_major");
+				for(var i=major.length-1;i>0;i--){
+					major.remove(i);
+				}
+				var classes=document.getElementById("select_classes");
+				for(var i=classes.length-1;i>0;i--){
+					classes.remove(i);
+				}
+				if(obj.options[obj.selectedIndex].value=="浙江大学"){
+					var name=new Array("应用生物科学","临床医学","信息与计算科学","机械工程");
+					var id=new Array("zjdxAppliedBiologicalScience","zjdxClinicalMedicine","zjdxInformationAndComputationalScience","zjdxMechanicalEngineering");
+					for(var i in name){
+						var option=document.createElement("option");
+						option.text=name[i];
+						option.id=id[i];
+						major.add(option);
+					}	
+				}
+				if(obj.options[obj.selectedIndex].value=="浙江工业大学"){
+					var name=new Array("工业设计","环境工程","法学类","海洋技术");
+					var id=new Array("zjgydxIndustrialDesign","zjgydxEnvironmentEngineering","zjgydxLegalCategory","zjgydxMarineTechnology");
+					for(var i in name){
+						var option=document.createElement("option");
+						option.text=name[i];
+						option.id=id[i];
+						major.add(option);
+					}				
+				}
+				if(obj.options[obj.selectedIndex].value=="浙江师范大学"){
+					var name=new Array("汉语言文学","汉语国际教育","交通运输","数学与应用数学");
+					var id=new Array("zjsfdxChineseLinguisticLiterature","zjsfdxChineseInternationalEducation","zjsfdxTraffic","zjsfdxMathematicsAndAppliedMathematics");
+					for(var i in name){
+						var option=document.createElement("option");
+						option.text=name[i];
+						option.id=id[i];
+						major.add(option);
+					}				
+				}
+				if(obj.options[obj.selectedIndex].value=="杭州电子科技大学"){
+					var name=new Array("物联网工程","车辆工程","数字媒体技术","应用物理学");
+					var id=new Array("hzdzkjdxInternetOfThingsProject","hzdzkjdxVehicleEngineering","hzdzkjdxDigitalMediaTechnology","hzdzkjdxAppliedPhysics");
+					for(var i in name){
+						var option=document.createElement("option");
+						option.text=name[i];
+						option.id=id[i];
+						major.add(option);
+					}				
+				}
+			}
+			function select_major(obj){
+				var classes=document.getElementById("select_classes");
+				for(var i=classes.length-1;i>0;i--){
+					classes.remove(i);
+				}
+				classes.add(new Option("1班","1"));
+				classes.add(new Option("2班","2"));
+				classes.add(new Option("3班","3"));
+				classes.add(new Option("4班","4"));
+			}
+			function clears(){
+				document.getElementById("name").value="";
+				document.getElementById("sex1").checked=false;
+				document.getElementById("sex2").checked=false;
+				document.getElementById("select_school").selectedIndex=0;
+				document.getElementById("select_major").selectedIndex=0;
+				document.getElementById("select_classes").selectedIndex=0;
+			}
+			function deletes(obj){
+				var stuTable=document.getElementById("stuInfromation");
+				var tr=document.getElementById(obj);
+				var i=tr.rowIndex;
+				tr.style.backgroundColor="red";
+				if(confirm("确认删除？")){
+					stuTable.deleteRow(i);
+					if(stuTable.rows.length==1){
+						stuTable.style.visibility="hidden";
+					}
+				}else {
+					tr.style.backgroundColor="";
+				}
+			}
+		</script>
+	</body>
+</html>
