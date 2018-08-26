@@ -226,7 +226,6 @@
 				var stuTable=document.getElementById("stuInfromation");
 				var tr=document.getElementById(obj);
 				var i=tr.rowIndex;
-				tr.style.backgroundColor="red";
 				if(confirm("确认删除？")){
 					stuTable.deleteRow(i);
 					if(stuTable.rows.length==1){
